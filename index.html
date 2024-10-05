@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <title>Oscar Daniel Rojas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px; /* Agregar un poco de padding */
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            width: 70%;
+            max-width: 600px; /* Limitar ancho para dispositivos más grandes */
+        }
+        h1 {
+            color: #333;
+            font-size: 1.5em; /* Tamaño base para h1 */
+            margin: 0.5em 0; /* Espaciado vertical */
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.2em; /* Ajustar tamaño en pantallas pequeñas */
+            }
+        }
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 45%;
+        }
+        button {
+            background-color: #28a745; /* Color verde */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 25px; /* Más padding */
+            font-size: 14px; /* Tamaño de fuente */
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s; /* Transiciones */
+        }
+        button:hover {
+            background-color: #218838; /* Color más oscuro en hover */
+            transform: scale(1.05); /* Efecto de escala */
+        }
+        button:active {
+            transform: scale(0.95); /* Efecto al hacer clic */
+        }
+    </style>
+    <body>
+        
+    </body>
+</head>
+<body>
+    <div class="container">
+<h1>Proceso de inicio de Certificación de Explotadores UAS</h1>
+        <input type="text" id="nombreEmpresa" placeholder="Proceso de Certificación No." />  
+                        <input type="text" id="nombreEmpresa" placeholder="Nombre de la Empresa" />  
+                            <input type="text" id="nit" placeholder="Número de Identificación Tributaria (NIT)" />
+                            <input type="date" id="fechaRadicacion" placeholder="Fecha de Radicación" />
+                                    <input type="text" id="fechaInicio" placeholder="Fecha de solicitud ECU" />
+                                        <input type="text" id="nombreSMS" placeholder="Nombre de (SMS)" />
+                                            <input type="text" id="jefePilotos" placeholder="Jefe de Pilotos" />
+                                                      <input type="text" id="encargadoAerocivil" placeholder="Encargado ante la Aerocivil" />
+                                                 <input type="text" id="faseCertificacion" placeholder="Fase del proceso de certificación" />
+                                            <input type="text" id="ciudadInspeccionAdmin" placeholder="Ciudad para la inspección sede Administrativa" />
+                                         <input type="text" id="ciudadInspeccionOperacional" placeholder="Ciudad para la inspección Operacional" />
+                                    <input type="text" id="correo" placeholder="Correo" />
+                                 <input type="text" id="contacto" placeholder="Contacto" />
+                              <input type="text" id="tipoOperacion" placeholder="Tipo de operación bajo RAC 100" />
+                        <input type="text" id="tipoContactoVisual" placeholder="Tipo de contacto visual" />
+                    <input type="text" id="vuelosEspeciales" placeholder="Vuelos especiales" />
+                <button id="guardar">Guardar</button>
+            <button id="exportar">Ver Flujo de Trabajo</button>
+    </div>
+
+    <script>
+        document.getElementById('guardar').addEventListener('click', function () {
+            const datos = {
+                nombreEmpresa: document.getElementById('nombreEmpresa').value,
+                nit: document.getElementById('nit').value,
+                fechaRadicacion: document.getElementById('fechaRadicacion').value,
+                fechaInicio: document.getElementById('fechaInicio').value,
+                nombreSMS: document.getElementById('nombreSMS').value,
+                jefePilotos: document.getElementById('jefePilotos').value,
+                encargadoAerocivil: document.getElementById('encargadoAerocivil').value,
+                faseCertificacion: document.getElementById('faseCertificacion').value,
+                ciudadInspeccionAdmin: document.getElementById('ciudadInspeccionAdmin').value,
+                ciudadInspeccionOperacional: document.getElementById('ciudadInspeccionOperacional').value,
+                correo: document.getElementById('correo').value,
+                contacto: document.getElementById('contacto').value,
+                tipoOperacion: document.getElementById('tipoOperacion').value,
+                tipoContactoVisual: document.getElementById('tipoContactoVisual').value,
+                vuelosEspeciales: document.getElementById('vuelosEspeciales').value
+            };
+
+            if (datos.nombreEmpresa) {
+                let allData = JSON.parse(localStorage.getItem('datos')) || [];
+                allData.push(datos);
+                localStorage.setItem('datos', JSON.stringify(allData));
+                alert('Datos guardados. Puede exportar a Excel.');
+                document.querySelectorAll('input').forEach(input => input.value = ''); // Limpiar inputs
+            } else {
+                alert('Por favor complete al menos el nombre de la empresa.');
+            }
+        });
+
+        document.getElementById('exportar').addEventListener('click', function () {
+            const datos = JSON.parse(localStorage.getItem('datos')) || [];
+            if (datos.length === 0) {
+                alert('No hay datos para exportar.');
+                return;
+            }
+
+            const data = [["Nombre de Empresa", "NIT", "Fecha de Radicación", "Fecha Inicio", "Nombre SMS", "Jefe Pilotos", "Encargado Aerocivil", "Fase de Certificación", "Ciudad Inspección Admin", "Ciudad Inspección Operacional", "Correo", "Contacto", "Tipo de Operación", "Tipo de Contacto Visual", "Vuelos Especiales"]];
+            datos.forEach(d => {
+                data.push([d.nombreEmpresa, d.nit, d.fechaRadicacion, d.fechaInicio, d.nombreSMS, d.jefePilotos, d.encargadoAerocivil, d.faseCertificacion, d.ciudadInspeccionAdmin, d.ciudadInspeccionOperacional, d.correo, d.contacto, d.tipoOperacion, d.tipoContactoVisual, d.vuelosEspeciales]);
+            });
+
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Datos");
+            XLSX.writeFile(wb, "datos.xlsx");
+        });
+    </script>
+</body>
+</html>
